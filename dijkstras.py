@@ -6,57 +6,84 @@ obstacle_space=[]
 table=[]
 open_list=pq()
 def map():
-    plt.xlim([0,600])
-    plt.ylim([0,250])
 
-    for x in range(100,150):
-        for y in range(0,100):
-            #plt.scatter(x,y,label="bottom rectange")
+
+    for x in range(0,601):
+        for y in range(0,6):
             obstacle_space.append((x,y))
 
-    for x in range(100,150):
-        for y in range(150,250):
-            #plt.scatter(x,y,label="top rectange")
+    for x in range(0,601):
+        for y in range(245,251):
             obstacle_space.append((x,y))
 
-    for x in range(235,365):
-        for y in range(85,160):
-            #plt.scatter(x,y, label='Map rectangle hexagon')
+    for x in range(0,6):
+        for y in range(0,251):
             obstacle_space.append((x,y))
 
-    for x in range(235,300):
-        for y in range(160,198):
-            if 38*x - 65*y >= -1470:
-                #plt.scatter(x,y,label='top left hexagon')
-                obstacle_space.append((x,y))
+    for x in range(595,601):
+        for y in range(0,251):
+            obstacle_space.append((x,y))
+    
+    for x in range(100,151):
+        for y in range(0,101):
+            obstacle_space.append((x,y))
+            
+    for x in range(95,100):
+        for y in range(0,101):
+            obstacle_space.append((x,y))
 
-    for x in range(300,365):
-        for y in range(160,198):
-            if 38*x + 65*y <= 24270:
-                #plt.scatter(x,y,label='top right hexagon')
-                obstacle_space.append((x,y))
+    for x in range(95,100):
+        for y in range(145,151):
+            obstacle_space.append((x,y))
 
-    for x in range(300,365):
-        for y in range(58,85):
-            if 27*x - 65*y <= 4330:
-                #plt.scatter(x,y,label='bottom right hexagon')
-                obstacle_space.append((x,y))
+    
+    for x in range(100,151):
+        for y in range(101,106):
+            obstacle_space.append((x,y))
+        for y in range(145,151):
+            obstacle_space.append((x,y))
+            
 
-    for x in range(235,300):
-        for y in range(58,85):
-            if 27*x + 65*y >= 11870:
-                #plt.scatter(x,y,label='bottom left hexagon')
-                obstacle_space.append((x,y))
+    for x in range(151,156):
+        for y in range(0,106):
+            obstacle_space.append((x,y))
+        for y in range(145,250):
+            obstacle_space.append((x,y))
+        
+    
+    for x in range(100,151):
+        for y in range(150,251):
+            obstacle_space.append((x,y))
+    
+    for x in range(95,100):
+        for y in range(150,251):
+            obstacle_space.append((x,y))
 
-    for x in range(460,510):
-        for y in range(125,225):
-            if 2*x+y <= 1145:
-                #plt.scatter(x,y,label='top triangle')
+    for x in range(95,100):
+        for y in range(100,105):
+            obstacle_space.append((x,y))
+    
+    for x in range(100,151):
+        for y in range(101,105):
+            obstacle_space.append((x,y))
+    
+    for x in range(455,460):
+        for y in range(20,230):
+            obstacle_space.append((x,y))
+    
+    for x in range(450,601):
+        for y in range(20,230):
+            if (2*x - y <= 895) and (2*x+y <= 1145):
                 obstacle_space.append((x,y))
-    for x in range(460,600):
-        for y in range(25,125):
-            if 2*x - y <= 895:
-                #plt.scatter(x,y, label='bottom triangle')
+    
+    for x in range(450,601):
+        for y in range(20,230):
+            if (2*x+y <= 1156.18) and (2*x - y <= 906.18):
+                obstacle_space.append((x,y))
+    
+    for x in range(220,380):
+        for y in range(40,230):
+            if  (y - (0.577)*x - (32.692)) < 0 and (y + (0.577)*x - (378.846)) < 0 and (y - (0.577)*x + (128.846)) > 0 and (y + (0.577)*x - (217.307)) > 0 and (230 <= x <= 370):
                 obstacle_space.append((x,y))
 
 def up(node,cost,visited):
@@ -213,14 +240,37 @@ def disp(bfs,path):
     canvas=pygame.display.set_mode((600,250))
     clock=pygame.time.Clock()
     check=True
+
+    rect_down_space=convert_rect_coord([95,0],250,105)
+    rect_up_space=convert_rect_coord([95,145],250,105)
+    tri_space_1=convert_coord([455,20],250)
+    tri_space_2=convert_coord([463,20],250)
+    tri_space_3=convert_coord([515.5,125],250)
+    tri_space_4=convert_coord([463,230],250)
+    tri_space_5=convert_coord([455,230],250)
+    hex_space_1 = convert_coord([300, 205.76], 250)
+    hex_space_2 = convert_coord([230, 165.38], 250)
+    hex_space_3 = convert_coord([230, 84.61], 250)
+    hex_space_4 = convert_coord([300, 44.23], 250)
+    hex_space_5 = convert_coord([370, 84.61], 250)
+    hex_space_6 = convert_coord([370, 165.38], 250)
     while check:
         for loop in pygame.event.get():
             if loop.type==pygame.QUIT:
                 check=False
+        pygame.draw.rect(canvas,"yellow",pygame.Rect(rect_down_space[0],rect_down_space[1],60,105))
+        pygame.draw.rect(canvas,"yellow",pygame.Rect(rect_up_space[0],rect_up_space[1],60,105))
+        pygame.draw.polygon(canvas,"yellow",((tri_space_1),(tri_space_2),(tri_space_3),(tri_space_4),(tri_space_5)))
+        pygame.draw.polygon(canvas,"yellow",((hex_space_1),(hex_space_2),(hex_space_3),(hex_space_4),(hex_space_5),(hex_space_6)))
         pygame.draw.rect(canvas,"orange",pygame.Rect(100,0,50,100))
         pygame.draw.rect(canvas,"orange",pygame.Rect(100,150,50,100))
         pygame.draw.polygon(canvas,"orange",((460,25),(460,225),(510,125)))
         pygame.draw.polygon(canvas,"orange",((235,87.5),(300,50),(365,87.5),(365,162.5),(300,200),(235,162.5)))
+        pygame.draw.rect(canvas,"yellow",pygame.Rect(0,0,5,250))
+        pygame.draw.rect(canvas,"yellow",pygame.Rect(595,0,5,250))
+        pygame.draw.rect(canvas,"yellow",pygame.Rect(0,0,600,5))
+        pygame.draw.rect(canvas,"yellow",pygame.Rect(0,245,600,5))
+
         for i in bfs:
             pygame.draw.circle(canvas,"white",convert_coord(i,250),1)
             pygame.display.flip()
