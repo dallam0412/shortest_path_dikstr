@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 from queue import PriorityQueue as pq
+import pygame
 obstacle_space=[]
 table=[]
 open_list=pq()
@@ -202,6 +203,37 @@ def down_right(node,cost,visited):
                     return
         table.append([cost,node,new_node])
         open_list.put((cost,(new_node)))
+def convert_coord(coordinate,frame_height):
+    return(coordinate[0],frame_height-coordinate[1])
+def convert_rect_coord(coordinate,frame_height,rect_height):
+    return(coordinate[0],frame_height-coordinate[1]-rect_height)
+
+def disp(bfs,path):
+    pygame.init()
+    canvas=pygame.display.set_mode((600,250))
+    clock=pygame.time.Clock()
+    check=True
+    while check:
+        for loop in pygame.event.get():
+            if loop.type==pygame.QUIT:
+                check=False
+        pygame.draw.rect(canvas,"orange",pygame.Rect(100,0,50,100))
+        pygame.draw.rect(canvas,"orange",pygame.Rect(100,150,50,100))
+        pygame.draw.polygon(canvas,"orange",((460,25),(460,225),(510,125)))
+        pygame.draw.polygon(canvas,"orange",((235,87.5),(300,50),(365,87.5),(365,162.5),(300,200),(235,162.5)))
+        for i in bfs:
+            pygame.draw.circle(canvas,"white",convert_coord(i,250),1)
+            pygame.display.flip()
+            clock.tick(1000)
+        for i in path:
+            pygame.draw.circle(canvas,"black",convert_coord(i,250),1)
+            pygame.display.flip()
+            clock.tick(20)
+        pygame.display.flip()
+        pygame.time.wait(5000)
+        check=False
+        pygame.quit()
+
 
 
 map()
@@ -238,6 +270,7 @@ while(open_list.empty()==False):
     up_left(current_node[1],current_node[0],closed_list)
     down_right(current_node[1],current_node[0],closed_list)
     down_left(current_node[1],current_node[0],closed_list)
+closed_list.append(goal)
 back_node=goal
 back_track=[back_node]
 while(True):
@@ -249,4 +282,6 @@ while(True):
     if back_node==start:
         break
 print("done")
+back_track.reverse()
 print(back_track)
+disp(closed_list,back_track)
