@@ -289,16 +289,16 @@ def disp(bfs,path):
 map()
 check_correct_input=False
 while (check_correct_input!=True):
-    start_x=int(input("enter the x coordinate of start node"))
-    start_y=int(input("enter the y coordinate of start node"))
+    start_x=int(input("enter the x coordinate of start node "))
+    start_y=int(input("enter the y coordinate of start node "))
     start=(start_x,start_y)
     if start in obstacle_space:
         print("start node is in obstacle space")
         continue
     else:
         check_correct_input=True
-    goal_x=int(input("enter the x coordinate of goal node"))
-    goal_y=int(input("enter the y coordinate of goal node"))
+    goal_x=int(input("enter the x coordinate of goal node "))
+    goal_y=int(input("enter the y coordinate of goal node "))
     goal=(goal_x,goal_y)
     if goal in obstacle_space:
         check_correct_input=False
