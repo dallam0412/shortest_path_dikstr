@@ -62,12 +62,149 @@ def up(node,cost,visited):
     new_x=node[0]
     new_y=node[1]+1
     new_node=(new_x,new_y)
-    if new_node not in obstacle_space and new_node not in visited:
+    if new_node not in obstacle_space and new_node not in visited and new_y<=250:
         cost=cost+1
-        open_list.put(cost,new_node)
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
 
 
-#map()
+def down(node,cost,visited):
+    new_x=node[0]
+    new_y=node[1]-1
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_y>=0:
+        cost=cost+1
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+def left(node,cost,visited):
+    new_x=node[0]-1
+    new_y=node[1]
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_x>=0:
+        cost=cost+1
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+def right(node,cost,visited):
+    new_x=node[0]+1
+    new_y=node[1]
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_x<=600:
+        cost=cost+1
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+def up_right(node,cost,visited):
+    new_x=node[0]+1
+    new_y=node[1]+1
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_x<=600 and new_y<=250 :
+        cost=cost+1.4
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+def up_left(node,cost,visited):
+    new_x=node[0]-1
+    new_y=node[1]+1
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_x>=0 and new_y<=250:
+        cost=cost+1.4
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+def down_left(node,cost,visited):
+    new_x=node[0]-1
+    new_y=node[1]-1
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_x>=0 and new_y>=0:
+        cost=cost+1.4
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+def down_right(node,cost,visited):
+    new_x=node[0]+1
+    new_y=node[1]-1
+    new_node=(new_x,new_y)
+    if new_node not in obstacle_space and new_node not in visited and new_x<=250 and new_y>=0:
+        cost=cost+1.4
+        for i in range(len(table)):
+            if table[i][2]==new_node:
+                if cost<table[i][0]:
+                    table[i][0]=cost
+                    table[i][1]=node
+                    table[i][2]=new_node
+                    return
+                else:
+                    return
+        table.append([cost,node,new_node])
+        open_list.put((cost,(new_node)))
+
+
+map()
 check_correct_input=False
 while (check_correct_input!=True):
     start_x=int(input("enter the x coordinate of start node"))
@@ -85,12 +222,31 @@ while (check_correct_input!=True):
         check_correct_input=False
         print("end node is in obstacle space")
 open_list.put((0,start))
-open_list.put((1,(8,10)))
-table.append([0,(goal_x,goal_y),(goal_x,goal_y)])
+table.append([0,(start_x,start_y),(start_x,start_y)])
 closed_list=[]
+print("processing")
 while(open_list.empty()==False):
     current_node=open_list.get()
+    if current_node[1]==goal:
+        break
     closed_list.append(current_node[1])
     up(current_node[1],current_node[0],closed_list)
-print(closed_list)
-print(table)
+    down(current_node[1],current_node[0],closed_list)
+    left(current_node[1],current_node[0],closed_list)
+    right(current_node[1],current_node[0],closed_list)
+    up_right(current_node[1],current_node[0],closed_list)
+    up_left(current_node[1],current_node[0],closed_list)
+    down_right(current_node[1],current_node[0],closed_list)
+    down_left(current_node[1],current_node[0],closed_list)
+back_node=goal
+back_track=[back_node]
+while(True):
+    for i in range(len(table)):
+        if table[i][2]==back_node:
+            back_node=table[i][1]
+            back_track.append(back_node)
+            break
+    if back_node==start:
+        break
+print("done")
+print(back_track)
